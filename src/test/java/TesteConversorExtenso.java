@@ -36,10 +36,11 @@ public class TesteConversorExtenso {
 		String extenso = conversor.converte(791);
 		Assert.assertEquals("Centena: ", "setecentos e noventa e um", extenso);
 	}
-
+	/*
 	@Test
 	public void testFalha() {
 		String extenso = conversor.converte(8);
 		Assert.assertEquals("Error: ", "sete", extenso);
 	}
+	*/
 }
