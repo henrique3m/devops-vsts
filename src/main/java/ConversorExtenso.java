@@ -1,12 +1,34 @@
+import java.text.ParseException;
+
 import junit.framework.Assert;
 
 public class ConversorExtenso {
 
-	public String converte(int i){
+	public String converte(double y){
 		String resultado = "";
+		String sinal = "";
+		
+		if (y < 0) {
+			sinal = "menos ";
+			y= y*-1;
+		}
+			
+		
+	    java.text.DecimalFormat df = new  java.text.DecimalFormat(); 
+		int i = (int)y;
+		double t = y-i; 
+		int fracao = 0;
+		
+		try {
+			fracao = (int) (df.parse(df.format(t)).doubleValue() *100);
+		} catch (ParseException e) {			
+			e.printStackTrace();
+		}
+		
+		// Trata inteiro
 		if ( i>= 100){
 			if (i == 100)
-				resultado = "cem";
+				resultado += "cem";
 			else {
 				resultado +=  ConverteCentena(i/100);
 				i = i % 100;
@@ -37,8 +59,40 @@ public class ConversorExtenso {
 			else
 				resultado += temp;
 		}
-
-		return resultado;
+		
+		// Trata fração
+		if (fracao > 0 && fracao < 99){
+			if ( fracao >= 20){	
+				String temp = ConverteDezenaII(fracao/10);
+				if (!resultado.isEmpty()&& !temp.isEmpty())
+					resultado += " e " + temp;
+				else
+					resultado += temp;
+				
+			    fracao= fracao % 10;
+			}
+			if ( fracao >= 10 && fracao < 20)	{		
+				String temp =  ConverteDezenaI(fracao);
+				if (!resultado.isEmpty()&& !temp.isEmpty())
+					resultado += " e " + temp;
+				else
+					resultado += temp;
+			}
+			else{
+				String temp = ConverteUnidade(fracao);
+				if (!resultado.isEmpty()&& !temp.isEmpty())
+					resultado += " e " + temp;
+				else
+					resultado += temp;
+			}
+			
+			resultado += " centavos";
+		}
+		
+		if (!sinal.isEmpty())
+			return sinal + resultado;
+		else 
+			return resultado;
 	}
 	
 	public String ConverteCentena (int i) {
